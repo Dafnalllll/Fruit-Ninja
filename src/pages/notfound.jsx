@@ -1,16 +1,8 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { FRUIT_TYPES } from "../constants/fruit";
 
-const SCATTER_FRUITS = [
-  { emoji: '🍎', color: '#ef4444' },
-  { emoji: '🍊', color: '#f97316' },
-  { emoji: '🍉', color: '#22c55e' },
-  { emoji: '🍇', color: '#a855f7' },
-  { emoji: '🍌', color: '#eab308' },
-  { emoji: '🍑', color: '#fb923c' },
-  { emoji: '🍓', color: '#ec4899' },
-  { emoji: '🍍', color: '#facc15' },
-]
+
 
 function Shard({ index, total, seed }) {
   const angle = (index / total) * 360
@@ -89,24 +81,27 @@ export default function NotFound() {
             radial-gradient(ellipse at 50% 20%, rgba(255,150,0,0.06) 0%, transparent 50%),
             linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 30%, #0a1a2e 60%, #0a0a1a 100%)
           `,
-          backgroundSize: '200% 200%',
-          animation: 'bg-drift 20s ease-in-out infinite',
+          backgroundSize: "200% 200%",
+          animation: "bg-drift 20s ease-in-out infinite",
         }}
       />
       <div
         className="absolute inset-0"
         style={{
           backgroundImage:
-            'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-          maskImage: 'radial-gradient(ellipse at 50% 50%, black 30%, transparent 70%)',
-          WebkitMaskImage: 'radial-gradient(ellipse at 50% 50%, black 30%, transparent 70%)',
+            "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+          maskImage:
+            "radial-gradient(ellipse at 50% 50%, black 30%, transparent 70%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse at 50% 50%, black 30%, transparent 70%)",
         }}
       />
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.7) 100%)',
+          background:
+            "radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.7) 100%)",
         }}
       />
 
@@ -114,18 +109,18 @@ export default function NotFound() {
       <div
         className="relative w-full h-screen flex items-center justify-center"
         style={{
-          perspective: '1000px',
+          perspective: "1000px",
           perspectiveOrigin: `${50 + mouse.x * 12}% ${50 + mouse.y * 10}%`,
-          transformStyle: 'preserve-3d',
+          transformStyle: "preserve-3d",
         }}
       >
         {/* Rotating shard debris */}
         <div
           className="absolute w-full h-full"
           style={{
-            transformStyle: 'preserve-3d',
+            transformStyle: "preserve-3d",
             transform: `rotateX(${mouse.y * 6}deg) rotateY(${mouse.x * 10}deg)`,
-            transition: 'transform 0.15s ease-out',
+            transition: "transform 0.15s ease-out",
           }}
         >
           {Array.from({ length: 24 }).map((_, i) => (
@@ -137,28 +132,28 @@ export default function NotFound() {
         <div
           className="relative flex flex-col items-center gap-6 z-10"
           style={{
-            transformStyle: 'preserve-3d',
-            transform: 'translateZ(40px)',
+            transformStyle: "preserve-3d",
+            transform: "translateZ(40px)",
           }}
         >
           {/* 404 Number - 3D layered */}
-          <div className="relative" style={{ transformStyle: 'preserve-3d' }}>
+          <div className="relative" style={{ transformStyle: "preserve-3d" }}>
             {/* Bottom shadow layer */}
             <div
               className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
               style={{
-                transform: 'translateZ(-30px) translateX(8px) translateY(8px)',
+                transform: "translateZ(-30px) translateX(8px) translateY(8px)",
                 opacity: 0.3,
-                filter: 'blur(8px)',
+                filter: "blur(8px)",
               }}
               aria-hidden="true"
             >
               <span
                 className="font-black leading-none text-[#0a0a1a]"
                 style={{
-                  fontSize: 'clamp(6rem, 30vw, 16rem)',
-                  WebkitTextStroke: '4px #1a1a2e',
-                  textStroke: '4px #1a1a2e',
+                  fontSize: "clamp(6rem, 30vw, 16rem)",
+                  WebkitTextStroke: "4px #1a1a2e",
+                  textStroke: "4px #1a1a2e",
                 }}
               >
                 404
@@ -169,7 +164,7 @@ export default function NotFound() {
             <div
               className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
               style={{
-                transformStyle: 'preserve-3d',
+                transformStyle: "preserve-3d",
                 transform: `translateZ(20px) translateX(${mouse.x * 8}px) translateY(${mouse.y * 5}px)`,
               }}
               aria-hidden="true"
@@ -177,12 +172,13 @@ export default function NotFound() {
               <span
                 className="font-black leading-none text-transparent"
                 style={{
-                  fontSize: 'clamp(6rem, 30vw, 16rem)',
-                  WebkitTextStroke: '4px rgba(255,68,68,0.3)',
-                  textStroke: '4px rgba(255,68,68,0.3)',
-                  background: 'linear-gradient(135deg, rgba(255,68,68,0.15), rgba(255,215,0,0.10))',
-                  WebkitBackgroundClip: 'text',
-                  backgroundClip: 'text',
+                  fontSize: "clamp(6rem, 30vw, 16rem)",
+                  WebkitTextStroke: "4px rgba(255,68,68,0.3)",
+                  textStroke: "4px rgba(255,68,68,0.3)",
+                  background:
+                    "linear-gradient(135deg, rgba(255,68,68,0.15), rgba(255,215,0,0.10))",
+                  WebkitBackgroundClip: "text",
+                  backgroundClip: "text",
                 }}
               >
                 404
@@ -192,21 +188,26 @@ export default function NotFound() {
             {/* Front main layer */}
             <div
               className="relative z-10 flex items-center justify-center select-none"
-              style={{ transformStyle: 'preserve-3d', animation: 'number-float 4s ease-in-out infinite' }}
+              style={{
+                transformStyle: "preserve-3d",
+                animation: "number-float 4s ease-in-out infinite",
+              }}
             >
               <span
                 className="font-black leading-none uppercase tracking-[-0.03em]"
                 style={{
-                  fontSize: 'clamp(6rem, 30vw, 16rem)',
-                  color: '#fff',
-                  WebkitTextStroke: '4px #1a1a2e',
-                  textStroke: '4px #1a1a2e',
-                  background: 'linear-gradient(135deg, #ff4444 30%, #ff6b35 60%, #ffd700 100%)',
-                  WebkitBackgroundClip: 'text',
-                  backgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  filter: 'drop-shadow(0 8px 20px rgba(255,50,50,0.4)) drop-shadow(0 0 60px rgba(255,50,50,0.15))',
-                  textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+                  fontSize: "clamp(6rem, 30vw, 16rem)",
+                  color: "#fff",
+                  WebkitTextStroke: "4px #1a1a2e",
+                  textStroke: "4px #1a1a2e",
+                  background:
+                    "linear-gradient(135deg, #ff4444 30%, #ff6b35 60%, #ffd700 100%)",
+                  WebkitBackgroundClip: "text",
+                  backgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  filter:
+                    "drop-shadow(0 8px 20px rgba(255,50,50,0.4)) drop-shadow(0 0 60px rgba(255,50,50,0.15))",
+                  textShadow: "0 2px 10px rgba(0,0,0,0.5)",
                 }}
               >
                 404
@@ -218,7 +219,7 @@ export default function NotFound() {
           <div
             className="relative"
             style={{
-              transformStyle: 'preserve-3d',
+              transformStyle: "preserve-3d",
               transform: `translateZ(30px) translateY(${mouse.y * 3}px)`,
             }}
           >
@@ -227,8 +228,8 @@ export default function NotFound() {
               <div
                 className="relative"
                 style={{
-                  transformStyle: 'preserve-3d',
-                  animation: 'fruit-sway 3s ease-in-out infinite',
+                  transformStyle: "preserve-3d",
+                  animation: "fruit-sway 3s ease-in-out infinite",
                 }}
               >
                 {/* Top half */}
@@ -237,11 +238,13 @@ export default function NotFound() {
                   style={{
                     width: 64,
                     height: 64,
-                    background: 'radial-gradient(circle at 40% 30%, #ff8888, #ef4444)',
-                    boxShadow: '0 6px 0 #1a1a2e, inset 0 -4px 0 rgba(0,0,0,0.2)',
+                    background:
+                      "radial-gradient(circle at 40% 30%, #ff8888, #ef4444)",
+                    boxShadow:
+                      "0 6px 0 #1a1a2e, inset 0 -4px 0 rgba(0,0,0,0.2)",
                     transform: `rotate(${-15 + mouse.x * 3}deg) translateZ(15px)`,
-                    transformStyle: 'preserve-3d',
-                    clipPath: 'polygon(0 45%, 100% 45%, 100% 100%, 0 100%)',
+                    transformStyle: "preserve-3d",
+                    clipPath: "polygon(0 45%, 100% 45%, 100% 100%, 0 100%)",
                   }}
                 >
                   <span className="mt-1">🍎</span>
@@ -252,11 +255,13 @@ export default function NotFound() {
                   style={{
                     width: 64,
                     height: 64,
-                    background: 'radial-gradient(circle at 40% 30%, #ffaaaa, #ef4444)',
-                    boxShadow: '0 6px 0 #1a1a2e, inset 0 -4px 0 rgba(0,0,0,0.2)',
+                    background:
+                      "radial-gradient(circle at 40% 30%, #ffaaaa, #ef4444)",
+                    boxShadow:
+                      "0 6px 0 #1a1a2e, inset 0 -4px 0 rgba(0,0,0,0.2)",
                     transform: `rotate(${15 + mouse.x * 3}deg) translateZ(-5px)`,
-                    transformStyle: 'preserve-3d',
-                    clipPath: 'polygon(0 0%, 100% 0%, 100% 55%, 0 55%)',
+                    transformStyle: "preserve-3d",
+                    clipPath: "polygon(0 0%, 100% 0%, 100% 55%, 0 55%)",
                   }}
                 >
                   <span className="-mt-1">🍎</span>
@@ -265,10 +270,12 @@ export default function NotFound() {
                 <div
                   className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[3px] pointer-events-none"
                   style={{
-                    background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.8), rgba(255,215,0,0.8), transparent)',
-                    boxShadow: '0 0 12px rgba(255,255,255,0.5), 0 0 30px rgba(255,215,0,0.3)',
-                    transform: 'rotateZ(-5deg) translateZ(2px)',
-                    animation: 'slice-glow 1.5s ease-in-out infinite',
+                    background:
+                      "linear-gradient(90deg, transparent, rgba(255,255,255,0.8), rgba(255,215,0,0.8), transparent)",
+                    boxShadow:
+                      "0 0 12px rgba(255,255,255,0.5), 0 0 30px rgba(255,215,0,0.3)",
+                    transform: "rotateZ(-5deg) translateZ(2px)",
+                    animation: "slice-glow 1.5s ease-in-out infinite",
                   }}
                 />
               </div>
@@ -276,56 +283,66 @@ export default function NotFound() {
           </div>
 
           {/* Subtitle */}
-          <div style={{ transformStyle: 'preserve-3d', transform: 'translateZ(25px)' }}>
+          <div
+            style={{
+              transformStyle: "preserve-3d",
+              transform: "translateZ(25px)",
+            }}
+          >
             <p
               className="text-center"
               style={{
-                fontSize: 'clamp(1rem, 2.5vw, 1.6rem)',
-                color: 'rgba(255,255,255,0.7)',
-                letterSpacing: '0.15em',
+                fontSize: "clamp(1rem, 2.5vw, 1.6rem)",
+                color: "rgba(255,255,255,0.7)",
+                letterSpacing: "0.15em",
                 fontWeight: 300,
               }}
             >
-              <span className="text-[#ff6b35] font-bold">SLICED</span>{' '}
-              right out of existence
+              <span className="text-[#ff6b35] font-bold">SLICED</span> right out
+              of existence
             </p>
           </div>
 
           {/* Home button */}
           <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate("/")}
             onMouseEnter={() => setHoverBtn(true)}
             onMouseLeave={() => setHoverBtn(false)}
             className="relative px-12 py-4 font-extrabold tracking-[0.25em] text-white uppercase cursor-pointer overflow-hidden rounded-xl border-[3px] border-[#1a1a2e]"
             style={{
-              fontSize: '1.1rem',
+              fontSize: "1.1rem",
               background: hoverBtn
-                ? 'linear-gradient(135deg, #ff5555, #dd2222)'
-                : 'linear-gradient(135deg, #ff4444, #cc0000)',
+                ? "linear-gradient(135deg, #ff5555, #dd2222)"
+                : "linear-gradient(135deg, #ff4444, #cc0000)",
               transform: hoverBtn
-                ? 'translateZ(50px) translateY(-2px) scale(1.03)'
-                : 'translateZ(50px)',
+                ? "translateZ(50px) translateY(-2px) scale(1.03)"
+                : "translateZ(50px)",
               boxShadow: hoverBtn
-                ? '0 10px 0 #1a1a2e, 0 15px 40px rgba(255,0,0,0.4), inset 0 2px 0 rgba(255,255,255,0.3)'
-                : '0 8px 0 #1a1a2e, 0 10px 30px rgba(255,0,0,0.3), inset 0 2px 0 rgba(255,255,255,0.3)',
-              transition: 'all 0.15s ease',
-              transformStyle: 'preserve-3d',
+                ? "0 10px 0 #1a1a2e, 0 15px 40px rgba(255,0,0,0.4), inset 0 2px 0 rgba(255,255,255,0.3)"
+                : "0 8px 0 #1a1a2e, 0 10px 30px rgba(255,0,0,0.3), inset 0 2px 0 rgba(255,255,255,0.3)",
+              transition: "all 0.15s ease",
+              transformStyle: "preserve-3d",
             }}
             onMouseDown={(e) => {
-              e.currentTarget.style.transform = 'translateZ(50px) translateY(6px)'
-              e.currentTarget.style.boxShadow = '0 2px 0 #1a1a2e, 0 5px 20px rgba(255,0,0,0.3)'
+              e.currentTarget.style.transform =
+                "translateZ(50px) translateY(6px)";
+              e.currentTarget.style.boxShadow =
+                "0 2px 0 #1a1a2e, 0 5px 20px rgba(255,0,0,0.3)";
             }}
             onMouseUp={(e) => {
-              e.currentTarget.style.transform = 'translateZ(50px) translateY(-2px) scale(1.03)'
-              e.currentTarget.style.boxShadow = '0 10px 0 #1a1a2e, 0 15px 40px rgba(255,0,0,0.4), inset 0 2px 0 rgba(255,255,255,0.3)'
+              e.currentTarget.style.transform =
+                "translateZ(50px) translateY(-2px) scale(1.03)";
+              e.currentTarget.style.boxShadow =
+                "0 10px 0 #1a1a2e, 0 15px 40px rgba(255,0,0,0.4), inset 0 2px 0 rgba(255,255,255,0.3)";
             }}
           >
             <span className="relative z-10">BACK TO SAFETY</span>
             <div
               className="absolute top-0 left-[-100%] w-3/5 h-full skew-x-[-20deg]"
               style={{
-                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
-                animation: 'shine-sweep 3s ease-in-out infinite',
+                background:
+                  "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)",
+                animation: "shine-sweep 3s ease-in-out infinite",
               }}
             />
           </button>
@@ -334,13 +351,13 @@ export default function NotFound() {
           <div
             className="flex items-center gap-3 mt-4"
             style={{
-              transformStyle: 'preserve-3d',
-              transform: 'translateZ(15px)',
-              animation: 'fruit-orbit 6s linear infinite',
-              transformOrigin: 'center center',
+              transformStyle: "preserve-3d",
+              transform: "translateZ(15px)",
+              animation: "fruit-orbit 6s linear infinite",
+              transformOrigin: "center center",
             }}
           >
-            {SCATTER_FRUITS.slice(0, 4).map((f, i) => (
+            {FRUIT_TYPES.slice(0, 4).map((f, i) => (
               <span
                 key={i}
                 className="text-lg inline-block"
@@ -400,5 +417,5 @@ export default function NotFound() {
         }
       `}</style>
     </div>
-  )
+  );
 }
