@@ -2,12 +2,12 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import GameOver from "../components/overlay/gameover";
 import StartOverlay from "../components/overlay/startoverlay";
 import HUD from "../components/game/HUD";
-import Particle from "../components/game/Particle";
+import Particle from "../components/game/particle";
 import useParticles from "../hooks/useParticle";
 import { createFruit } from "../utils/fruitgenerator";
 import { easeOutQuad } from "../utils/math";
 import FlashText from "../components/game/flashtext";
-import GameScene from "../components/game/GameScene";
+import GameScene from "../components/game/gamescene";
 
 export default function Play() {
   // Game state
