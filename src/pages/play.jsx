@@ -33,6 +33,7 @@ export default function Play() {
   const lastSliceTime = useRef(0);
   const comboTimeout = useRef(null);
   const spawnIntervalRef = useRef(null);
+  const fruitsRef = useRef([]);
 
   // Mouse tracking for 3D parallax
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
@@ -105,9 +106,16 @@ export default function Play() {
           const y = f.startY - parabola;
           const rotation = f.rotation + f.spinSpeed * dt;
           const zSin = Math.sin(e * 3) * 60;
-          updated.push({ ...f, x, y, elapsed: e, rotation, zSin });
+          updated.push({
+            ...f,
+            x,
+            y,
+            elapsed: e,
+            rotation,
+            zSin,
+          });
         }
-        return prev.filter((f) => f.sliced || f.elapsed < f.duration);
+        return updated;
       });
       frame = requestAnimationFrame(tick);
     };
@@ -145,6 +153,10 @@ export default function Play() {
     return () => clearInterval(check);
   }, [started, gameOver, score, highScore]);
 
+  useEffect(() => {
+    fruitsRef.current = fruit;
+  }, [fruit]);
+
   // ---- Slice detection ----
   const handleSlice = useCallback(
     (clientX, clientY) => {
@@ -153,64 +165,76 @@ export default function Play() {
       if (now - lastSliceTime.current < 50) return;
       lastSliceTime.current = now;
 
-      // Add to slash trail
       setSlashPoints((prev) => [
         ...prev.slice(-15),
         { x: clientX, y: clientY, life: 1, id: now },
       ]);
 
+      // ✅ Baca state sinkron dari ref — tidak masuk updater
+      const slicedIds = new Set();
       let hitCount = 0;
-      setFruits((prev) => {
-        const next = prev.map((f) => {
-          if (f.sliced || f.elapsed >= f.duration) return f;
-          const dx = f.x - clientX;
-          const dy = f.y - clientY;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < f.radius * f.scale + 20) {
-            hitCount++;
-            if (f.name === "bomb") {
-              setLives((l) => {
-                const nextL = l - 1;
-                if (nextL <= 0) {
-                  setGameOver(true);
-                  if (score > highScore) {
-                    setHighScore(score);
-                    try {
-                      localStorage.setItem("fn-highscore", String(score));
-                    } catch {
-                      /* silent */
-                    }
-                  }
-                  return 0;
-                }
-                return nextL;
-              });
-              setFlashText({ text: "💥 BOOM!", color: "#ff4444", key: now });
-              spawn(f.x, f.y, "#ff4444", 20);
-              spawn(f.x, f.y, "#ff8800", 15);
-              setCombo(0);
-            } else {
-              const pts = 1 + Math.floor(combo * 0.5);
-              setScore((s) => s + pts);
-              spawn(f.x, f.y, f.color, 10);
-              if (hitCount >= 2) {
-                const bonus = hitCount * 5;
-                setScore((s) => s + bonus);
-                setFlashText({
-                  text: `🔥 ${hitCount}x COMBO! +${bonus}`,
-                  color: "#ffd700",
-                  key: now,
-                });
+      let bombHit = null;
+      const fruitHits = [];
+
+      for (const f of fruitsRef.current) {
+        if (f.sliced || f.elapsed >= f.duration) continue;
+        const dx = f.x - clientX;
+        const dy = f.y - clientY;
+        if (Math.sqrt(dx * dx + dy * dy) < f.radius * f.scale + 20) {
+          hitCount++;
+          slicedIds.add(f.id);
+          if (f.name === "bomb") {
+            bombHit = { x: f.x, y: f.y };
+          } else {
+            fruitHits.push({ x: f.x, y: f.y, color: f.color });
+          }
+        }
+      }
+
+      if (slicedIds.size === 0) return;
+
+      // ✅ setFruits updater sekarang MURNI — tidak ada side effect
+      setFruits((prev) =>
+        prev.map((f) => (slicedIds.has(f.id) ? { ...f, sliced: true } : f)),
+      );
+
+      // ✅ Semua state update di LUAR updater → StrictMode aman → 1 bom = 1 nyawa
+      if (bombHit) {
+        setLives((l) => {
+          const nextL = l - 1;
+          if (nextL <= 0) {
+            setGameOver(true);
+            if (score > highScore) {
+              setHighScore(score);
+              try {
+                localStorage.setItem("fn-highscore", String(score));
+              } catch {
+                /* silent */
               }
             }
-            return { ...f, sliced: true };
+            return 0;
           }
-          return f;
+          return nextL;
         });
-        return next;
-      });
-
-      if (hitCount > 0) {
+        setFlashText({ text: "💥 BOOM!", color: "#ff4444", key: now });
+        spawn(bombHit.x, bombHit.y, "#ff4444", 20);
+        spawn(bombHit.x, bombHit.y, "#ff8800", 15);
+        setCombo(0);
+      } else {
+        fruitHits.forEach((f) => {
+          const pts = 1 + Math.floor(combo * 0.5);
+          setScore((s) => s + pts);
+          spawn(f.x, f.y, f.color, 10);
+        });
+        if (hitCount >= 2) {
+          const bonus = hitCount * 5;
+          setScore((s) => s + bonus);
+          setFlashText({
+            text: `🔥 ${hitCount}x COMBO! +${bonus}`,
+            color: "#ffd700",
+            key: now,
+          });
+        }
         setCombo((c) => c + hitCount);
         clearTimeout(comboTimeout.current);
         comboTimeout.current = setTimeout(() => setCombo(0), 1200);
@@ -225,6 +249,7 @@ export default function Play() {
       const x = (e.clientX / window.innerWidth - 0.5) * 2;
       const y = (e.clientY / window.innerHeight - 0.5) * 2;
       setMouse({ x, y });
+      handleSlice(e.clientX, e.clientY); // ← tambah ini
     };
     const onMouseDown = (e) => handleSlice(e.clientX, e.clientY);
     const onTouchMove = (e) => {
@@ -406,5 +431,3 @@ export default function Play() {
     </div>
   );
 }
-
-
